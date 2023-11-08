@@ -46,3 +46,5 @@ app.get('/verifyHolder', async (req, res) => {
         res.status(500).send('Error: ' + error.message);
     }
 });
+
+app.get("/", async (req,res) => {res.status(200).json({message: "Wallet API is running"})})

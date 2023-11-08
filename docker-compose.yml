@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+
+  wallet-backend:
+    container_name: wallet-backend
+    build:
+      dockerfile: backend.Dockerfile
+    env_file: .env
+    ports:
+      - 8286:8086
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://wallet-backend:8086" ]
+      interval: 10s
+      timeout: 50s
+      retries: 3
+      start_period: 10s
+
+  wallet-frontend:
+    container_name: wallet-frontend
+    build:
+      dockerfile: frontend.Dockerfile
+    env_file: .env
+    ports:
+      - 19006:19006
+    stdin_open: true
+    depends_on:
+      wallet-backend:
+        condition: service_healthy
+    command: bash -c "yarn run web"
+#    tty: true
+#TODO why CMD in dockerfile has different behaviour?
