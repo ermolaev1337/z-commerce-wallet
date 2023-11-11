@@ -48,3 +48,8 @@ app.get('/verifyHolder', async (req, res) => {
 });
 
 app.get("/", async (req,res) => {res.status(200).json({message: "Wallet API is running"})})
+
+//TODO implement the webhooks which will trigger: Connection request (to be visualise in the Connections screen), and Attribute Presentation request (to be visualised on the Action screen)
+app.get('/webhook/connection', async (req, res) => {res.status(501).json({message:"Not implemented"})});
+app.get('/webhook/attribute-presentation', async (req, res) => {res.status(501).json({message:"Not implemented"})});
+
