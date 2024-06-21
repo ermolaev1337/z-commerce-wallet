@@ -14,8 +14,8 @@ services:
       timeout: 50s
       retries: 3
       start_period: 10s
-  #    networks:
-  #      - heimdall-network
+    networks:
+      - heimdall-network
 
   wallet-frontend:
     container_name: wallet-frontend
@@ -29,12 +29,10 @@ services:
         condition: service_healthy
     command: yarn run web
     tty: true
-    #    networks: #TODO make only backend work with the heimdall-network
-    #      - heimdall-network
     volumes:
       - ./frontend/src:/app/src
 #TODO why CMD in dockerfile has different behaviour?
-#
-#networks:
-#  heimdall-network:
-#    external: true
+
+networks:
+  heimdall-network:
+    external: true
