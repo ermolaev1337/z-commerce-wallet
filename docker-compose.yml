@@ -31,7 +31,8 @@ services:
     tty: true
     volumes:
       - ./frontend/src:/app/src
-#TODO why CMD in dockerfile has different behaviour?
+    networks:
+      - heimdall-network
 
 networks:
   heimdall-network:
