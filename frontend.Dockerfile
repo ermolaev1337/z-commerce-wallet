@@ -1,8 +1,6 @@
-FROM node:latest
-#TODO maybe we should keep the chekout frontend in its own folder (as api)
-WORKDIR /app
-COPY ./package.json /app/package.json
-RUN yarn install
-COPY ./ /app/
+FROM node
 
-CMD ["yarn", "run", "web"]
+WORKDIR /app
+COPY ./frontend/package.json /app/package.json
+RUN yarn
+COPY ./frontend /app

@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const app = express();
 const dotenv = require('dotenv');
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: '../frontend.env' });
 const hostname = process.env.BASE_URL;
 const port = 8086;
 const cors = require("cors");

@@ -1,43 +1,40 @@
-version: "3.9"
-
 services:
 
   wallet-backend:
     container_name: wallet-backend
     build:
       dockerfile: backend.Dockerfile
-    env_file: .env
+    env_file: backend.env
     ports:
       - 8286:8086
+    command: yarn run start
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://wallet-backend:8086" ]
       interval: 10s
       timeout: 50s
       retries: 3
       start_period: 10s
-    networks:
-      - heimdall-network
+  #    networks:
+  #      - heimdall-network
 
   wallet-frontend:
     container_name: wallet-frontend
     build:
       dockerfile: frontend.Dockerfile
-    env_file: .env
     ports:
       - 19006:19006
       - 8281:8081
-    stdin_open: true
     depends_on:
       wallet-backend:
         condition: service_healthy
-    command: bash -c "yarn run web"
-    networks: #TODO make only backend work with the heimdall-network
-      - heimdall-network
+    command: yarn run web
+    tty: true
+    #    networks: #TODO make only backend work with the heimdall-network
+    #      - heimdall-network
     volumes:
-      - ./src:/app/src
-#    tty: true
+      - ./frontend/src:/app/src
 #TODO why CMD in dockerfile has different behaviour?
-
-networks:
-  heimdall-network:
-    external: true
+#
+#networks:
+#  heimdall-network:
+#    external: true

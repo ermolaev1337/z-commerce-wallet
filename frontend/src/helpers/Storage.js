@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import ConstantsList from '../helpers/ConfigApp';
+import ConstantsList from './ConfigApp';
 
 export const savePassCode = async (PassCode) => {
     return await AsyncStorage.setItem('@passCode', PassCode)
