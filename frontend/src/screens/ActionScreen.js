@@ -13,9 +13,10 @@ const createAttributePresentation = async ({challenge, expiration}) => {
     console.debug("newAttributePresentation >>", newAttributePresentation)
     return newAttributePresentation
 }
-const confirmProofRequest = async (attributePresentation, orderID) => {//TODO
+const confirmProofRequest = async (attributePresentation, orderID, agentURL) => {//TODO
+    console.debug("Confirmed Proof Request, agentURL >>", agentURL)
     console.debug("Confirmed Proof Request, sending Attribute Presentation, attributePresentation >>", attributePresentation)
-    const submitAttributePresentationURL = `http://localhost:2222/submit-attribute-presentation?orderID=${orderID}`
+    const submitAttributePresentationURL = `http://${agentURL}/submit-attribute-presentation?orderID=${orderID}`
     console.debug("submitAttributePresentationURL >>", submitAttributePresentationURL)
 
     const responseSubmitAttributePresentation = await fetch(submitAttributePresentationURL, {
@@ -37,7 +38,7 @@ const rejectProofRequest = async (challenge, expiration) => {//TODO
 
 const confirmConnectionInvitation = async (agentURL, orderID) => {//TODO
     console.debug("Confirmed Connection Invitation, orderID >>", orderID)
-    agentURL = "localhost:2222"//TODO solve the mismatch between docker names and localhost IP address when dockerized frontend is accessed from the browser, idea: have all the interactions with the Heimdall instance via Wallet Backend which is within the docker network
+    console.debug("Confirmed Connection Invitation, agentURL >>", agentURL)
     const confirmationURL = `http://${agentURL}/confirm-connection?orderID=${orderID}`
     console.debug("confirmationURL", confirmationURL)
     const incomingProofRequest = await (await fetch(confirmationURL)).json()
@@ -71,7 +72,7 @@ const ActionScreen = () => {
                 <p>Expiration {expiration}</p>
                 <button disabled={!attributePresentation}
                         onClick={async () => {
-                            const result = await confirmProofRequest(attributePresentation, orderID)
+                            const result = await confirmProofRequest(attributePresentation, orderID,agentURL)
                             alert(JSON.stringify(result))
                             setProofRequest(<p>No incoming Proof Requests</p>)
                         }}>Confirm

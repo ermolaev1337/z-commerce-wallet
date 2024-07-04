@@ -21,6 +21,7 @@ services:
     container_name: wallet-frontend
     build:
       dockerfile: frontend.Dockerfile
+    env_file: frontend.env
     ports:
       - 19006:19006
       - 8281:8081
