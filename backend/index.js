@@ -35,6 +35,18 @@ app.get('/sendAttrReq', async (req, res) => {
     }
 });
 
+app.get('/sendRangeReq', async (req, res) => {
+    try {
+        console.log(req);
+        const response = await axios.get(
+            `http://${ip_holder}/heimdalljs/pres/range?index=10&expiration=100&challenge=1231423534&secretKey=holder_sk.txt&destination=pres_attribute_before_revocation.json&credential=cred_holder.json`);
+        const textResponse = response.data;
+        res.send(JSON.stringify(textResponse));
+    } catch (error) {
+        res.status(500).send('Error: ' + error.message);
+    }
+});
+
 app.get('/verifyHolder', async (req, res) => {
     try {
         const response = await axios.get(

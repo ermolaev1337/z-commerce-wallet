@@ -5,16 +5,32 @@ import queryString from 'query-string';
 
 
 //TODO extract functions to a separated file
-const createAttributePresentation = async ({challenge, expiration}) => {
-    console.debug("Creating Attribute Presentation, for challenge, and expiration >> >>", challenge, expiration)
-    const createAttributePresentationURL = `http://localhost:8083/heimdalljs/pres/attribute?index=10&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
-    console.debug("createAttributePresentationURL >>", createAttributePresentationURL)
-    const newAttributePresentation = await (await fetch(createAttributePresentationURL)).json()
-    console.debug("newAttributePresentation >>", newAttributePresentation)
-    return newAttributePresentation
+const createAttributePresentation = async ({challenge, expiration, url}) => {
+    console.debug("Creating Attribute Presentation, for challenge, expiration, url >>", challenge, expiration, url)
+
+    //TODO: index can be skipped and handled in the HTTP wrapper...
+
+    let createURL
+
+    if (url === "/heimdalljs/pres/attribute") {
+        createURL = `http://localhost:8083${url}?index=${10}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
+    } else if (url === "/heimdalljs/pres/range") {
+         createURL = `http://localhost:8083${url}?index=${11}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
+    } else {
+        console.error("url mismatch, url >>", url)
+        return
+    }
+
+    const data = await fetch(createURL)
+    console.debug("data >>", data)
+    const resp = await data.json()
+
+    console.debug("resp >>", resp)
+    return resp
 }
-const confirmProofRequest = async (attributePresentation, orderID, agentURL) => {//TODO
+const confirmProofRequest = async (attributePresentation, orderID, agentURL, url) => {//TODO
     console.debug("Confirmed Proof Request, agentURL >>", agentURL)
+    console.debug("Confirmed Proof Request, url >>", url)
     console.debug("Confirmed Proof Request, sending Attribute Presentation, attributePresentation >>", attributePresentation)
     const submitAttributePresentationURL = `http://${agentURL}/submit-attribute-presentation?orderID=${orderID}`
     console.debug("submitAttributePresentationURL >>", submitAttributePresentationURL)
@@ -59,7 +75,7 @@ const ActionScreen = () => {
 
     //TODO we will have multiple cred types in the future
     const ProofRequestCard = ({
-                                  proofRequestData: {challenge, expiration},
+                                  proofRequestData: {challenge, expiration, url},
                                   connectionInvitationData: {agentURL, orderID},
                                   attributePresentation
                               }) => {//TODO make a nice Connection Invitation Card
@@ -70,9 +86,10 @@ const ActionScreen = () => {
                 <p>Credential Identity Card</p>
                 <p>Challenge {challenge}</p>
                 <p>Expiration {expiration}</p>
+                <p>Type {url}</p>
                 <button disabled={!attributePresentation}
                         onClick={async () => {
-                            const result = await confirmProofRequest(attributePresentation, orderID,agentURL)
+                            const result = await confirmProofRequest(attributePresentation, orderID, agentURL, url)
                             alert(JSON.stringify(result))
                             setProofRequest(<p>No incoming Proof Requests</p>)
                         }}>Confirm
@@ -93,7 +110,8 @@ const ActionScreen = () => {
                     const incomingProofRequest = await confirmConnectionInvitation(agentURL, orderID)
                     console.debug(" ConnectionInvitationCard onClick() incomingProofRequest >>", incomingProofRequest)
                     setProofRequestData(incomingProofRequest)//TODO maybe messaging channel instead of passing data between child/parent components?
-                }}>Confirm</button>
+                }}>Confirm
+                </button>
                 <button onClick={() => rejectConnectionInvitation(agentURL, orderID)}>Reject</button>
             </div>
         )
@@ -121,7 +139,7 @@ const ActionScreen = () => {
     }, [])
 
     useEffect(() => {
-        if (!connectionInvitationData){
+        if (!connectionInvitationData) {
             // console.error("No connectionInvitationData")
             return
         }
@@ -129,16 +147,17 @@ const ActionScreen = () => {
     }, [connectionInvitationData])
 
     useEffect(() => {
-        if (!connectionInvitationData){
+        if (!connectionInvitationData) {
             // console.error("No connectionInvitationData")
             return
         }
-        if (!proofRequestData){
+        if (!proofRequestData) {
             // console.error("No proofRequestData")
             return
         }
-        setProofRequest(<ProofRequestCard proofRequestData={proofRequestData} connectionInvitationData={connectionInvitationData}
-                                     attributePresentation={attributePresentation}/>)
+        setProofRequest(<ProofRequestCard proofRequestData={proofRequestData}
+                                          connectionInvitationData={connectionInvitationData}
+                                          attributePresentation={attributePresentation}/>)
     }, [connectionInvitationData, proofRequestData, attributePresentation])
 
 
