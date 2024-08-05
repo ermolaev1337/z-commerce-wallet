@@ -2,6 +2,8 @@ import {StyleSheet, Text, View} from 'react-native'
 import React, {useState, useEffect} from "react";
 import * as Linking from 'expo-linking';
 import queryString from 'query-string';
+import {themeStyles} from "../theme/Styles";
+import HeadingComponent from "../components/HeadingComponent";
 
 
 //TODO extract functions to a separated file
@@ -15,7 +17,7 @@ const createAttributePresentation = async ({challenge, expiration, url}) => {
     if (url === "/heimdalljs/pres/attribute") {
         createURL = `http://localhost:8083${url}?index=${10}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
     } else if (url === "/heimdalljs/pres/range") {
-         createURL = `http://localhost:8083${url}?index=${11}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
+        createURL = `http://localhost:8083${url}?index=${11}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`
     } else {
         console.error("url mismatch, url >>", url)
         return
@@ -162,9 +164,12 @@ const ActionScreen = () => {
 
 
     return (
-        <View>
-            {connectionInvitation}
-            {proofRequest}
+        <View style={themeStyles.mainContainer}>
+            <HeadingComponent text="Actions" />
+            <View>
+                {connectionInvitation}
+                {proofRequest}
+            </View>
         </View>
     )
 }

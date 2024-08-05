@@ -1,31 +1,64 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
+import {View, Text, StyleSheet, ImageBackground, Image} from 'react-native';
 
 const image = require('../assets/images/card-bg.png')
-const card_badge = require('../assets/images/badge.png')
+const card_badge = require('../assets/images/id-card.png')
+
 
 function CredentialsCard(props) {
+    const [
+        digits,
+        type,
+        someNumbers,
+        otherNumbers,
+        revocationTree,
+        expirationTimestamp,
+        digit,
+        empty,
+        name,
+        surname,
+        address,
+        birthdayTimestamp,
+        eyes,
+        height,
+        anotherNumbers,
+        someOtherNumbers,
+    ] = props.attributes;
+
+
+    console.log("birthdayTimestamp", birthdayTimestamp)
     return (
         <View>
             <View style={styles.card}>
-                <ImageBackground source={image} style={styles.image} imageStyle={{ borderRadius: 15 }}>
+                <ImageBackground source={image} style={styles.image} imageStyle={{borderRadius: 15}}>
                     <View style={styles.container}>
                         <View style={styles.cardTextContainer}>
-                            <Text style={styles.card_text}>{props.card_title}</Text>
-                            <Text style={styles.card_text}>{props.card_type}</Text>
+                            <Text style={styles.card_text}>{name} {surname}</Text>
                         </View>
-                        <View style={styles.imageContainer}>
-                            <Image source={card_badge} style={styles.logo} />
+                        {/*<View style={styles.item1}>*/}
+                        {/*    <Text style={styles.card_small_text}>Address</Text>*/}
+                        {/*    <Text style={styles.card_small_text}>{address}</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={styles.item1}>*/}
+                        {/*    <Text style={styles.card_small_text}>Birthday</Text>*/}
+                        {/*    <Text style={styles.card_small_text}>{(new Date(1000*birthdayTimestamp)).toLocaleDateString()}</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={styles.imageContainer}>*/}
+                        {/*    <Image source={card_badge} style={styles.logo}/>*/}
+                        {/*</View>*/}
+                        <View style={styles.item2}>
                         </View>
                     </View>
                     <View style={styles.container}>
                         <View style={styles.item1}>
-                            <Image source={props.card_logo} style={{ width: 50, height: 50 }} />
+                            <Image source={card_badge} style={{width: 50, height: 50}}/>
                         </View>
-                        <View style={styles.item2}>
-                            <Text style={styles.card_small_text}>Issued by</Text>
-                            <Text style={styles.card_small_text}>{props.issuer}</Text>
+                        <View style={styles.item}>
+                            <Text style={styles.card_small_text}>Type: {type}</Text>
+                            <Text style={styles.card_small_text}>Issued by: Registration Office</Text>
+                            <Text style={styles.card_small_text}>Valid until: {(new Date(1*expirationTimestamp)).toLocaleDateString()}</Text>
                         </View>
+
                     </View>
                 </ImageBackground>
             </View>
@@ -70,9 +103,7 @@ const styles = StyleSheet.create({
         padding: 20,
         justifyContent: 'center',
     },
-    imageContainer: {
-
-    },
+    imageContainer: {},
     card_text: {
         color: 'white',
         fontSize: 23,
