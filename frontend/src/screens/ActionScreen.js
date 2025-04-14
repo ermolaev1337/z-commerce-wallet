@@ -12,9 +12,9 @@ const createAttributePresentation = async ({challenge, expiration, url}) => {
     let createURL;
 
     if (url === "/heimdalljs/pres/attribute") {
-        createURL = `http://localhost:8083${url}?index=${10}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`;
+        createURL = `http://10.240.5.163:8083${url}?index=${10}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`;
     } else if (url === "/heimdalljs/pres/range") {
-        createURL = `http://localhost:8083${url}?index=${11}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`;
+        createURL = `http://10.240.5.163:8083${url}?index=${11}&expiration=${expiration}&challenge=${challenge}&secretKey=holder_sk.txt&destination=pres_attribute_e_commerce.json&credential=cred_holder.json`;
     } else {
         console.error("url mismatch, url >>", url);
         return;

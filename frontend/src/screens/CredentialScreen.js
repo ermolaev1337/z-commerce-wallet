@@ -13,7 +13,7 @@ import ModalComponent from '../components/ModalComponent';
 
 
 const getCred = async () => {
-    const cred = await fetch("http://localhost:8083/cred?path=cred_holder.json")
+    const cred = await fetch("http://10.240.5.163:8083/cred?path=cred_holder.json")
     return await cred.json()
 }
 
