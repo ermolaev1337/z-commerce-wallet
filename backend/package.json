@@ -14,6 +14,6 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "nodemon": "^3.0.1",
-    "dotenv": "latest"
+    "dotenv": "17.4.2"
   }
 }
